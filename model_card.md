@@ -21,16 +21,13 @@ Prompts:
 
 ## 3. How the Model Works  
 
-Explain your scoring approach in simple language.  
+The recommender works like a judge giving points to every song in the catalog.
 
-Prompts:  
-
-- What features of each song are used (genre, energy, mood, etc.)  
-- What user preferences are considered  
-- How does the model turn those into a score  
-- What changes did you make from the starter logic  
-
-Avoid code here. Pretend you are explaining the idea to a friend who does not program.
+- **What it looks at in each song:** the genre (like pop or lofi), the mood (like happy or chill), and the energy level (a number from 0, very calm, to 1, very intense).
+- **What it knows about the user:** their favorite genre, their favorite mood, and how energetic they like their music.
+- **How it gives points:** if the song's genre is the user's favorite, it gets 2 points. If the mood matches, it gets 1 more point. Then it gets up to 1 extra point for energy: the closer the song's energy is to what the user likes, the more points it gets. A perfect match scores 4.
+- **How it picks songs:** it scores all the songs, puts them in order from most to fewest points, and recommends the top 5. For each one, it also lists the reasons it earned its points.
+- **Changes from the starter:** the starter code returned no recommendations. I added loading the song file, the point system above, the ranking, and the list of reasons. I made genre worth the most because it is the strongest sign of someone's taste.
 
 ---
 
