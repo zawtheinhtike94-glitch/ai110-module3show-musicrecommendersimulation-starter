@@ -17,17 +17,31 @@ Replace this paragraph with your own summary of what your version does.
 
 ## How The System Works
 
-Explain your design in plain language.
+**How real apps do it.** Apps like Spotify and YouTube use two main ideas. *Collaborative filtering* looks at what other people do: if people with taste like mine liked a song, I will probably like it too. It uses data like likes, skips, replays, and playlists. *Content-based filtering* looks at the song itself: if I like happy, high-energy pop, it finds other songs with a similar genre, mood, and energy. Real apps mix both.
 
-Some prompts to answer:
+**What my version does.** My simulator is content-based, because my data only has song attributes (no other users). It gives every song a score that shows how well it matches the user's taste, then recommends the songs with the highest scores. It cares most about genre, then mood, then how close the song's energy is to what the user wants.
 
-- What features does each `Song` use in your system
-  - For example: genre, mood, energy, tempo
-- What information does your `UserProfile` store
-- How does your `Recommender` compute a score for each song
-- How do you choose which songs to recommend
+**Features each `Song` uses:**
+- `genre` (for example pop, lofi, rock)
+- `mood` (for example happy, chill, intense)
+- `energy` (a number from 0 to 1)
+- The other columns (`tempo_bpm`, `valence`, `danceability`, `acousticness`) are loaded but not used in my first scoring rule.
 
-You can include a simple diagram or bullet list if helpful.
+**What the `UserProfile` stores:**
+- `favorite_genre`
+- `favorite_mood`
+- `target_energy` (the energy level the user likes, from 0 to 1)
+- `likes_acoustic` (stored, but not used in my first scoring rule)
+
+**Scoring rule (one song):**
+- Genre matches the user's favorite genre: **+2 points**
+- Mood matches the user's favorite mood: **+1 point**
+- Energy closeness: **+ (1 − |song energy − target energy|)**, so a song with energy close to what the user wants gets almost 1 point, and a far one gets less
+- Best possible score: 2 + 1 + 1 = **4**
+
+I made genre worth more than mood because genre is the strongest sign of taste, while mood changes from day to day.
+
+**Ranking rule (all songs):** score every song in `songs.csv`, sort them from highest to lowest score, and recommend the top *k* songs (for example the top 5).
 
 ---
 
