@@ -43,6 +43,20 @@ I made genre worth more than mood because genre is the strongest sign of taste, 
 
 **Ranking rule (all songs):** score every song in `songs.csv`, sort them from highest to lowest score, and recommend the top *k* songs (for example the top 5).
 
+**Dataset.** I expanded `data/songs.csv` from 10 to 18 songs. The 8 new songs add genres and moods that were missing (hip-hop, classical, country, metal, r&b, edm, reggae, folk; energetic, peaceful, nostalgic, angry, romantic, euphoric, laid-back, sad), with energy from very calm (0.20) to very intense (0.97).
+
+**User profile used for testing:**
+
+```python
+user_prefs = {"favorite_genre": "pop", "favorite_mood": "happy", "target_energy": 0.8}
+```
+
+**Biases I expect:**
+- **Genre is worth the most (2 points),** so the system may over-prioritize genre and rank a pop song with the wrong mood above a non-pop song that matches the user's mood and energy.
+- **Exact word matching is narrow.** "indie pop" does not count as "pop", so a pop fan gets 0 genre points for a song they would probably like.
+- **Small, uneven catalog.** Most genres have only one song, so users who like rare genres get fewer good matches than pop or lofi fans.
+- **Only three features.** Tempo, valence, danceability, and acousticness are ignored, so two songs with the same genre, mood, and energy look identical even if they sound very different.
+
 ---
 
 ## Getting Started
