@@ -9,6 +9,7 @@ FLOAT_COLUMNS = {"energy", "tempo_bpm", "valence", "danceability", "acousticness
 # Algorithm Recipe weights (see README "Scoring rule").
 GENRE_POINTS = 2.0
 MOOD_POINTS = 1.0
+ENERGY_POINTS = 1.0  # max points for a perfect energy match
 
 @dataclass
 class Song:
@@ -91,8 +92,8 @@ def score_song(user_prefs: Dict, song: Dict) -> Tuple[float, List[str]]:
         score += MOOD_POINTS
         reasons.append(f"mood match: {song['mood']} (+{MOOD_POINTS:.1f})")
 
-    # Closer energy earns more points: identical energy = +1.0, opposite ends = +0.0.
-    energy_points = 1.0 - abs(song["energy"] - user_prefs["target_energy"])
+    # Closer energy earns more points: identical energy = full ENERGY_POINTS, opposite ends = 0.
+    energy_points = ENERGY_POINTS * (1.0 - abs(song["energy"] - user_prefs["target_energy"]))
     score += energy_points
     reasons.append(
         f"energy {song['energy']:.2f} vs target {user_prefs['target_energy']:.2f} (+{energy_points:.2f})"

@@ -132,13 +132,213 @@ User profile: genre=pop, mood=happy, energy=0.8
 
 ---
 
+## Stress Test: Different User Profiles
+
+I ran `python -m src.main` with six listener profiles: three normal tastes and two edge cases designed to try to trick the scoring (plus the default). Top 5 for each:
+
+### Default Pop
+
+```
+============================================================
+User profile: genre=pop, mood=happy, energy=0.8
+============================================================
+1. Sunrise City by Neon Echo  (pop, happy)
+   Score: 3.98 / 4.00
+   - genre match: pop (+2.0)
+   - mood match: happy (+1.0)
+   - energy 0.82 vs target 0.80 (+0.98)
+
+2. Gym Hero by Max Pulse  (pop, intense)
+   Score: 2.87 / 4.00
+   - genre match: pop (+2.0)
+   - energy 0.93 vs target 0.80 (+0.87)
+
+3. Rooftop Lights by Indigo Parade  (indie pop, happy)
+   Score: 1.96 / 4.00
+   - mood match: happy (+1.0)
+   - energy 0.76 vs target 0.80 (+0.96)
+
+4. Block Party Anthem by Kid Kairo  (hip-hop, energetic)
+   Score: 0.95 / 4.00
+   - energy 0.85 vs target 0.80 (+0.95)
+
+5. Night Drive Loop by Neon Echo  (synthwave, moody)
+   Score: 0.95 / 4.00
+   - energy 0.75 vs target 0.80 (+0.95)
+```
+
+### High-Energy Pop
+
+```
+============================================================
+User profile: genre=pop, mood=happy, energy=0.85
+============================================================
+1. Sunrise City by Neon Echo  (pop, happy)
+   Score: 3.97 / 4.00
+   - genre match: pop (+2.0)
+   - mood match: happy (+1.0)
+   - energy 0.82 vs target 0.85 (+0.97)
+
+2. Gym Hero by Max Pulse  (pop, intense)
+   Score: 2.92 / 4.00
+   - genre match: pop (+2.0)
+   - energy 0.93 vs target 0.85 (+0.92)
+
+3. Rooftop Lights by Indigo Parade  (indie pop, happy)
+   Score: 1.91 / 4.00
+   - mood match: happy (+1.0)
+   - energy 0.76 vs target 0.85 (+0.91)
+
+4. Block Party Anthem by Kid Kairo  (hip-hop, energetic)
+   Score: 1.00 / 4.00
+   - energy 0.85 vs target 0.85 (+1.00)
+
+5. Storm Runner by Voltline  (rock, intense)
+   Score: 0.94 / 4.00
+   - energy 0.91 vs target 0.85 (+0.94)
+```
+
+### Chill Lofi
+
+```
+============================================================
+User profile: genre=lofi, mood=chill, energy=0.35
+============================================================
+1. Library Rain by Paper Lanterns  (lofi, chill)
+   Score: 4.00 / 4.00
+   - genre match: lofi (+2.0)
+   - mood match: chill (+1.0)
+   - energy 0.35 vs target 0.35 (+1.00)
+
+2. Midnight Coding by LoRoom  (lofi, chill)
+   Score: 3.93 / 4.00
+   - genre match: lofi (+2.0)
+   - mood match: chill (+1.0)
+   - energy 0.42 vs target 0.35 (+0.93)
+
+3. Focus Flow by LoRoom  (lofi, focused)
+   Score: 2.95 / 4.00
+   - genre match: lofi (+2.0)
+   - energy 0.40 vs target 0.35 (+0.95)
+
+4. Spacewalk Thoughts by Orbit Bloom  (ambient, chill)
+   Score: 1.93 / 4.00
+   - mood match: chill (+1.0)
+   - energy 0.28 vs target 0.35 (+0.93)
+
+5. Coffee Shop Stories by Slow Stereo  (jazz, relaxed)
+   Score: 0.98 / 4.00
+   - energy 0.37 vs target 0.35 (+0.98)
+```
+
+### Deep Intense Rock
+
+```
+============================================================
+User profile: genre=rock, mood=intense, energy=0.9
+============================================================
+1. Storm Runner by Voltline  (rock, intense)
+   Score: 3.99 / 4.00
+   - genre match: rock (+2.0)
+   - mood match: intense (+1.0)
+   - energy 0.91 vs target 0.90 (+0.99)
+
+2. Gym Hero by Max Pulse  (pop, intense)
+   Score: 1.97 / 4.00
+   - mood match: intense (+1.0)
+   - energy 0.93 vs target 0.90 (+0.97)
+
+3. Neon Pulse by DJ Lumen  (edm, euphoric)
+   Score: 0.95 / 4.00
+   - energy 0.95 vs target 0.90 (+0.95)
+
+4. Block Party Anthem by Kid Kairo  (hip-hop, energetic)
+   Score: 0.95 / 4.00
+   - energy 0.85 vs target 0.90 (+0.95)
+
+5. Iron Furnace by Grave Signal  (metal, angry)
+   Score: 0.93 / 4.00
+   - energy 0.97 vs target 0.90 (+0.93)
+```
+
+### Sad but High-Energy (edge case)
+
+```
+============================================================
+User profile: genre=folk, mood=sad, energy=0.9
+============================================================
+1. Rainy Window by Mara Lune  (folk, sad)
+   Score: 3.40 / 4.00
+   - genre match: folk (+2.0)
+   - mood match: sad (+1.0)
+   - energy 0.30 vs target 0.90 (+0.40)
+
+2. Storm Runner by Voltline  (rock, intense)
+   Score: 0.99 / 4.00
+   - energy 0.91 vs target 0.90 (+0.99)
+
+3. Gym Hero by Max Pulse  (pop, intense)
+   Score: 0.97 / 4.00
+   - energy 0.93 vs target 0.90 (+0.97)
+
+4. Neon Pulse by DJ Lumen  (edm, euphoric)
+   Score: 0.95 / 4.00
+   - energy 0.95 vs target 0.90 (+0.95)
+
+5. Block Party Anthem by Kid Kairo  (hip-hop, energetic)
+   Score: 0.95 / 4.00
+   - energy 0.85 vs target 0.90 (+0.95)
+```
+
+### Unknown Genre (edge case)
+
+```
+============================================================
+User profile: genre=k-pop, mood=happy, energy=0.7
+============================================================
+1. Rooftop Lights by Indigo Parade  (indie pop, happy)
+   Score: 1.94 / 4.00
+   - mood match: happy (+1.0)
+   - energy 0.76 vs target 0.70 (+0.94)
+
+2. Sunrise City by Neon Echo  (pop, happy)
+   Score: 1.88 / 4.00
+   - mood match: happy (+1.0)
+   - energy 0.82 vs target 0.70 (+0.88)
+
+3. Night Drive Loop by Neon Echo  (synthwave, moody)
+   Score: 0.95 / 4.00
+   - energy 0.75 vs target 0.70 (+0.95)
+
+4. Dusty Back Roads by The Willow Creek Band  (country, nostalgic)
+   Score: 0.85 / 4.00
+   - energy 0.55 vs target 0.70 (+0.85)
+
+5. Block Party Anthem by Kid Kairo  (hip-hop, energetic)
+   Score: 0.85 / 4.00
+   - energy 0.85 vs target 0.70 (+0.85)
+```
+
+---
+
 ## Experiments You Tried
 
-Use this section to document the experiments you ran. For example:
+**Experiment: Weight Shift (half genre, double energy).** I changed the weights from genre 2.0 / mood 1.0 / energy up to 1.0 to **genre 1.0 / mood 1.0 / energy up to 2.0** (the maximum score stays 4.0) and re-ran all six profiles. The weights are named constants at the top of `src/recommender.py` (`GENRE_POINTS`, `MOOD_POINTS`, `ENERGY_POINTS`), so the change only touched those numbers.
 
-- What happened when you changed the weight on genre from 2.0 to 0.5
-- What happened when you added tempo or valence to the score
-- How did your system behave for different types of users
+| Profile | Before (genre 2 / mood 1 / energy 1) | After (genre 1 / mood 1 / energy 2) |
+|---|---|---|
+| Default Pop | Sunrise City 3.98, **Gym Hero 2.87**, Rooftop Lights 1.96 | Sunrise City 3.96, **Rooftop Lights 2.92**, Gym Hero 2.74 |
+| Chill Lofi | Library Rain 4.00, Midnight Coding 3.93, Focus Flow 2.95 | Library Rain 4.00, Midnight Coding 3.86, Focus Flow 2.90 |
+| Deep Intense Rock | Storm Runner 3.99, Gym Hero 1.97, ... Iron Furnace 0.93 (#5) | Storm Runner 3.98, Gym Hero 2.94, ... Iron Furnace 1.86 (#5) |
+| Sad but High-Energy | Rainy Window **3.40**, Storm Runner 0.99 | Rainy Window **2.80**, Storm Runner 1.98 |
+| Unknown Genre (k-pop) | Rooftop Lights 1.94, Sunrise City 1.88 | Rooftop Lights 2.88, Sunrise City 2.76 |
+
+**What changed:**
+- For the default pop/happy user, **Rooftop Lights** (indie pop, happy) moved above **Gym Hero** (pop, intense). That feels *more accurate*: a "happy" listener probably prefers a happy song over an intense gym song, even if the genre label is slightly different.
+- For the "sad but high-energy" edge case, the calm folk song **Rainy Window still wins**, but the gap shrank from 2.4 points to 0.8 points. Energy now matters more, but genre + mood (2 points together) still outweigh it.
+- Most top-1 picks did not change (Sunrise City, Library Rain, Storm Runner). The experiment mostly **reshuffled positions 2–5** rather than changing who wins.
+
+**Conclusion:** the shift made results a little more accurate for mood-focused listeners, but mostly *different* rather than clearly better. I kept the original weights (genre 2.0) as the default because genre is still the strongest sign of taste for most users, and documented this experiment as evidence of how sensitive the rankings are to the weights.
 
 ---
 
