@@ -2,20 +2,22 @@
 
 ## 1. Model Name  
 
-Give your model a short, descriptive name.  
-Example: **VibeFinder 1.0**  
+**VibeMatch 1.0**: a simple song recommender that matches songs to a listener's genre, mood, and energy.
 
 ---
 
 ## 2. Intended Use  
 
-Describe what your recommender is designed to do and who it is for. 
+**What it does.** VibeMatch suggests the top 5 songs from a small catalog for one listener. It tries to guess which songs that person will enjoy, and it explains why each song was picked.
 
-Prompts:  
+**Who it is for.** It is a classroom project to learn how recommenders work. It is not built for real users.
 
-- What kind of recommendations does it generate  
-- What assumptions does it make about the user  
-- Is this for real users or classroom exploration  
+**What it assumes about the user.** It assumes the user can describe their taste with one favorite genre, one favorite mood, and one energy level. It assumes their taste does not change over time.
+
+**Not intended for:**
+- A real music app with real users. The catalog is tiny and the songs are made up.
+- Judging which songs are "good" or popular. It has no data about what people actually listen to.
+- Users with mixed tastes (for example, someone who likes both rock and jazz). It only handles one genre and one mood at a time.
 
 ---
 
@@ -33,26 +35,22 @@ The recommender works like a judge giving points to every song in the catalog.
 
 ## 4. Data  
 
-Describe the dataset the model uses.  
+**Size.** 18 songs in `data/songs.csv`. The starter file had 10 songs, and I added 8 more.
 
-Prompts:  
+**Features.** Each song has a title, artist, genre, mood, energy (0 to 1), tempo, valence, danceability, and acousticness. My scoring only uses genre, mood, and energy.
 
-- How many songs are in the catalog  
-- What genres or moods are represented  
-- Did you add or remove data  
-- Are there parts of musical taste missing in the dataset  
+**What is represented.** 15 genres (pop, lofi, rock, ambient, jazz, synthwave, indie pop, hip-hop, classical, country, metal, r&b, edm, reggae, folk) and 14 moods (happy, chill, intense, relaxed, moody, focused, energetic, peaceful, nostalgic, angry, romantic, euphoric, laid-back, sad). The 8 songs I added cover genres and moods that were missing from the starter file.
+
+**Limits.** Most genres have only one song, but lofi has three and pop has two, so those fans get more good matches. There are no lyrics, languages, or listening history, so a lot of real musical taste is missing. The songs and artists are made up.
 
 ---
 
 ## 5. Strengths  
 
-Where does your system seem to work well  
-
-Prompts:  
-
-- User types for which it gives reasonable results  
-- Any patterns you think your scoring captures correctly  
-- Cases where the recommendations matched your intuition  
+- **Clear, common tastes work well.** For the Chill Lofi listener, all top 5 songs were calm study or relaxing songs, and the #1 song (Library Rain) was a perfect 4.00 match. For the pop/happy listener, the happy pop song Sunrise City was #1.
+- **Different listeners get different lists.** Chill Lofi and Deep Intense Rock had no songs in common at all, so the system really can tell calm music from loud music.
+- **Energy "closeness" works.** A calm listener is not pushed toward loud songs, and a loud listener is not pushed toward calm ones, because songs closer to the target energy get more points.
+- **Every pick is explained.** Each song comes with reasons like "genre match: pop (+2.0)", so it is easy to see why it was chosen.
 
 ---
 
@@ -110,23 +108,21 @@ Prompts:
 
 ## 8. Future Work  
 
-Ideas for how you would improve the model next.  
-
-Prompts:  
-
-- Additional features or preferences  
-- Better ways to explain recommendations  
-- Improving diversity among the top results  
-- Handling more complex user tastes  
+1. **Give partial credit for similar genres.** For example, "metal" could get some points for a rock fan, and "indie pop" for a pop fan, using a small list of related genres.
+2. **Use more features.** Add tempo, valence (how happy it sounds), danceability, and the user's `likes_acoustic` preference to the score, so songs that feel different can be told apart.
+3. **Add variety to the top 5.** Limit how many songs from the same artist or genre can appear, so the same high-energy songs do not show up for almost everyone.
+4. **Support mixed tastes.** Let a user list more than one favorite genre or mood.
 
 ---
 
 ## 9. Personal Reflection  
 
-A few sentences about your experience.  
+**Biggest learning moment.** When I changed the weights (less genre, more energy), I expected the top songs to change, but every listener kept the same #1 song. At first I did not understand why. Then I saw that a song that matches the listener on genre, mood, and energy gets almost full points under any weights, so it always wins. The weights only matter for songs that match some things but not others. That helped me understand that a score is always calculated for one person, not stored on the song.
 
-Prompts:  
+**How AI helped, and when I double-checked it.** I used Claude to explain ideas step by step (like why the CSV rows become dictionaries and why we need both a scoring rule and a ranking rule), to write the code, and to draft my documentation. I still had to check its work. When it wrote my evaluation, it said Block Party Anthem appeared in four top-5 lists, but when we checked the real output it was five, so we fixed it. The starter code also had an import bug that made `python -m src.main` crash, which we found by actually running the program.
 
-- What you learned about recommender systems  
-- Something unexpected or interesting you discovered  
-- How this changed the way you think about music recommendation apps  
+**What surprised me.** The algorithm is just adding up points for three things, but the results still "feel" like real recommendations. The lofi listener got only calm study songs, and the rock listener got only loud songs. It also surprised me how easily a simple rule creates unfairness: just because "metal" is not spelled "rock," a rock fan almost missed a metal song.
+
+**What I would try next.** I would give partial points for similar genres, use more features like danceability and acousticness, and make sure the top 5 has more variety. I would also like to try collaborative filtering with fake listening history, to see how "people like you also liked" changes the results.
+
+**How this changed how I think about music apps.** Now I understand that when Spotify recommends a song, it is not magic. Someone chose which features matter and how many points each one is worth, and those choices decide what I see and what I never hear about.  

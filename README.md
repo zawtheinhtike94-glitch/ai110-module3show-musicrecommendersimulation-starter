@@ -2,16 +2,7 @@
 
 ## Project Summary
 
-In this project you will build and explain a small music recommender system.
-
-Your goal is to:
-
-- Represent songs and a user "taste profile" as data
-- Design a scoring rule that turns that data into recommendations
-- Evaluate what your system gets right and wrong
-- Reflect on how this mirrors real world AI recommenders
-
-Replace this paragraph with your own summary of what your version does.
+**VibeMatch 1.0** is a small, content-based music recommender written in Python. It loads 18 songs from `data/songs.csv`, compares each song to a listener's taste profile (favorite genre, favorite mood, and target energy), and gives every song a score out of 4: +2 for a genre match, +1 for a mood match, and up to +1 for how close the song's energy is to what the listener wants. It then ranks the songs and prints the top 5, with the reasons each song earned its points. I tested it with six different listener profiles, ran a weight-shift experiment, and documented its strengths, biases, and limitations in the [Model Card](model_card.md).
 
 ---
 
@@ -344,15 +335,13 @@ User profile: genre=k-pop, mood=happy, energy=0.7
 
 ## Limitations and Risks
 
-Summarize some limitations of your recommender.
+- **Exact genre matching.** "metal" does not count as "rock" and "indie pop" does not count as "pop," so listeners miss closely related songs. The rock listener got the metal song Iron Furnace only at #5.
+- **Genre and mood outweigh energy.** Together they are worth 3 of the 4 points, so a listener who wants sad but high-energy music still gets a calm sad song at #1.
+- **Tiny, uneven catalog.** Only 18 made-up songs, and most genres have just one song. Fans of rare genres (or genres not in the catalog, like k-pop) get weaker recommendations.
+- **Few features, no behavior data.** It ignores tempo, valence, danceability, acousticness, lyrics, and language, and it has no listening history, so it cannot learn what people actually play or skip.
+- **Same songs repeat.** High-energy songs like Block Party Anthem show up in five of the six test listeners' top 5.
 
-Examples:
-
-- It only works on a tiny catalog
-- It does not understand lyrics or language
-- It might over favor one genre or mood
-
-You will go deeper on this in your model card.
+More detail is in the Limitations and Bias section of the [Model Card](model_card.md).
 
 ---
 
@@ -362,10 +351,9 @@ Read and complete `model_card.md`:
 
 [**Model Card**](model_card.md)
 
-Write 1 to 2 paragraphs here about what you learned:
+**How recommenders turn data into predictions.** I learned that a recommender does not "know" what I like. It turns songs into features (genre, mood, energy), turns me into a profile, and then uses a scoring rule to judge every song for that one person and a ranking rule to sort them. The same song gets a different score for different people, which is why the lofi listener and the rock listener got completely different lists. Even with just three features and simple addition, the results felt like real recommendations.
 
-- about how recommenders turn data into predictions
-- about where bias or unfairness could show up in systems like this
+**Where bias and unfairness show up.** I also learned that small design choices create unfairness. Matching genres by exact words hid a metal song from a rock fan, giving genre the most points let it overpower what a listener said about energy, and having more pop and lofi songs in the catalog gives those listeners better results than fans of rare genres. Real apps make these same kinds of choices at a much bigger scale, so the people who design them decide a lot about what music listeners ever get to hear.
 
 
 
